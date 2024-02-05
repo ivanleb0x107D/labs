@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #4d4d4d;
+            position: relativergb(214, 214, 214)
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header img {
+            width: 50px;
+            height: 50px;
+            vertical-align: middle;
+        }
+
+        header h1 {
+            display: inline-block;
+            margin: 0;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-box {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        #plans-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .plan {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+        }
+
+        .button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        
+        .button-sun-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .button {
+            background-color: #f00;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .transparent-button {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .button img {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        #second-button {
+            bottom: 70px;
+            background-color: transparent;
+            padding: 0;
+            border: #ffffff00;
+            cursor: pointer;
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .modal-input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+
+        .modal-button {
+            background-color: #f00;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #modal p {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+
+        .plan {
+            position: relative;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+            text-align: center;
+        }
+
+        .buttons {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+
+        .plan:hover .buttons {
+            display: block;
+        }
+
+        .button {
+            background-color: rgba(255, 60, 0, 0.753);
+            color: #fff;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .button.green {
+            background-color: rgba(88, 190, 19, 0.801);
+        }
+
+
+        .search-container {
+            position: relative;
+        }       
+
+        .search-box {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        #filterDropdown {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: linear-gradient(to bottom, #f9f9f9, #e5e5e5);
+        }
+
+        #filterDropdown:hover {
+            background: linear-gradient(to bottom, #e5e5e5, #f9f9f9);
+        }
+
+        #filterDropdown:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="Site Icon">
+        <h1>Planning</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search..." oninput="filterPlans()">
+
+        <select id="filterDropdown" onchange="displayPlans()">
+            <option value="all">Все</option>
+            <option value="active">Активные</option>
+            <option value="completed">Завершенные</option>
+        </select>
+
+    </div>
+
+    <div id="plans-container">
+
+    </div>
+
+    <div class="button-container">
+        <button id="second-button" class="transparent-button" onclick="openFormModal()">
+            <img src="plus.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 5px;">
+        </button>
+
+        <button id="second-button" onclick="onButtonTrash()">
+            <img src="trash.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 10px;">
+        </button>
+    </div>
+
+    <div class="button-sun-container">
+        <button id="second-button" class="transparent-button" onclick="changeTheme()">
+            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 5px;">
+        </button>
+    </div>
+
+    <div id="modal">
+        <p>Create plan</p>
+        <input type="text" class="modal-input" placeholder="Name" style="margin-top: 10px;" id="nameInput">
+        <input type="text" class="modal-input" placeholder="Description" style="margin-top: 10px;" id="descInput">
+        <br>
+        <button class="modal-button" onclick="onFormApply()">Create</button>
+        <button class="modal-button" onclick="onFormClose()">Cancel</button>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+
+
+        function onButtonTrash(){
+            window.location.href = 'trash.html';
+        }
+
+        const plans = JSON.parse(localStorage.getItem('plans')) || [];
+        var sunTheme = localStorage.getItem('planTheme');
+        
+        if(sunTheme == 'true') sunTheme = true;
+        else sunTheme = false;
+
+        var bodyElement = document.body;
+        if(sunTheme) 
+            bodyElement.style.backgroundColor = '#4d4d4d';
+        else 
+            bodyElement.style.backgroundColor = '#ffffff';
+
+        function savePlans() {
+            localStorage.setItem('plans', JSON.stringify(plans));
+        }
+
+        function addPlan(name, desc) {
+            plans.push({ name, desc, isDone:false, inTrash:false });
+            savePlans();
+        }
+
+        function changeTheme(){
+            
+            sunTheme = !sunTheme;
+            localStorage.setItem('planTheme', sunTheme);
+
+            if(sunTheme)
+                bodyElement.style.backgroundColor = '#4d4d4d';
+            else
+                bodyElement.style.backgroundColor = '#ffffff';
+        }
+
+
+        function openFormModal() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "block";
+        }
+
+        function onFormApply() {
+            const nameInput = document.getElementById('nameInput');
+            const descInput = document.getElementById('descInput');
+
+            if (nameInput.value && descInput.value) {
+                addPlan(nameInput.value, descInput.value);
+                onFormClose();
+            } else {
+                alert('Please fill in both Name and Description fields.');
+            }
+        }
+
+        function onFormClose() {
+            var modal = document.getElementById("modal");
+            modal.style.display = "none";
+
+            location.reload();
+        }
+
+        window.onload = function() {
+            displayPlans();
+        };
+
+        function onDeletePlan(index) {
+            plans[index].inTrash = true;
+            savePlans();
+            displayPlans();
+        }
+
+        function onCompletePlan(index) {
+            
+            plans[index].isDone = true;
+            savePlans();
+            displayPlans();
+        }
+
+        function getPlanSizeNoTrash(){
+            var cnt = 0;
+            var selectedStatus = document.getElementById('filterDropdown').value;
+            plans.forEach((plan, index) => {
+                if(plan.inTrash) return;
+                if(selectedStatus == 'completed' && !plan.isDone) return;
+                if(selectedStatus == 'active' && plan.isDone) return;
+                cnt++;
+            });
+            return cnt;
+        }
+
+
+        function displayPlans() {
+            const plansContainer = document.getElementById('plans-container');
+            plansContainer.innerHTML = '';
+            var nonTrashedIndex = 0;
+            const nonTrashSize = getPlanSizeNoTrash();
+            var selectedStatus = document.getElementById('filterDropdown').value;
+
+            plans.forEach((plan, index) => {
+                if(plan.inTrash) return;
+
+                if(selectedStatus == 'completed' && !plan.isDone) return;
+                if(selectedStatus == 'active' && plan.isDone) return;
+
+                const planDiv = document.createElement('div');
+                planDiv.classList.add('plan');
+
+                if(plan.isDone)
+                    planDiv.style.backgroundColor = '#80cc44A0';
+
+                // buttons
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.classList.add('buttons');
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('button');
+                deleteButton.textContent = 'Удалить';
+                deleteButton.addEventListener('click', () => onDeletePlan(index));
+                buttonsDiv.appendChild(deleteButton);
+
+                if(!plan.isDone){
+                    const completeButton = document.createElement('button');
+                    completeButton.classList.add('button', 'green');
+                    completeButton.textContent = 'Завершить';
+                    completeButton.addEventListener('click', () => onCompletePlan(index));
+                    
+                    buttonsDiv.appendChild(completeButton);
+                }
+
+                // texts
+                const heading = document.createElement('h2');
+                heading.textContent = plan.name;
+                heading.style.marginTop = '5px';
+
+                if(plan.isDone)
+                    heading.textContent += " ✔";
+            
+                const description = document.createElement('p');
+                description.textContent = plan.desc;
+                description.style.paddingBottom = '15px';
+
+                planDiv.appendChild(buttonsDiv);
+                planDiv.appendChild(heading);
+                planDiv.appendChild(description);
+                plansContainer.appendChild(planDiv);
+
+                if ((nonTrashedIndex + 1) % 2 === 0 && nonTrashedIndex + 1 !== nonTrashSize) {
+                    const lineBreak = document.createElement('br');
+                    plansContainer.appendChild(lineBreak);
+                }
+                nonTrashedIndex++;
+            });
+        }
+
+
+        function removeInsertedBreaks() {
+            var plansContainer = document.getElementById('plans-container');
+            var insertedBreaks = plansContainer.querySelectorAll('.inserted-br');
+            insertedBreaks.forEach(function(br) {
+                br.remove();
+            });
+        }
+
+        function filterPlans() {
+            var searchInput = document.querySelector('.search-box');
+            var searchTerm = searchInput.value.toLowerCase();
+            if(searchTerm == ''){
+                removeInsertedBreaks();
+                displayPlans();
+                return;
+            }
+
+            var plansContainer = document.getElementById('plans-container');
+            var plans = plansContainer.getElementsByClassName('plan');
+
+            var lineBreaks = plansContainer.getElementsByTagName('br');
+            for (var j = 0; j < lineBreaks.length; j++) {
+                lineBreaks[j].style.display = 'none';
+            }
+
+            var tmp = 0;
+            for (var i = 0; i < plans.length; i++) {
+                var planName = plans[i].getElementsByTagName('h2')[0].textContent.toLowerCase();
+                
+                if (planName.startsWith(searchTerm)) {
+                    plans[i].style.display = '';
+                    tmp++;
+                    if(tmp % 2 == 0)
+                        plans[i].insertAdjacentHTML('afterend', '<br>');
+                } else {
+                    plans[i].style.display = 'none';
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>

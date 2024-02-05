@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #4d4d4d;
+            position: relativergb(214, 214, 214)
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header img {
+            width: 50px;
+            height: 50px;
+            vertical-align: middle;
+        }
+
+        header h1 {
+            display: inline-block;
+            margin: 0;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-box {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        #plans-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .plan {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+        }
+
+        .button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        
+        .button-sun-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .button {
+            background-color: #f00;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+
+        .transparent-button {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .button img {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        #second-button {
+            bottom: 70px;
+            background-color: transparent;
+            padding: 0;
+            border: #ffffff00;
+            cursor: pointer;
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .modal-input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+
+        .modal-button {
+            background-color: #f00;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #modal p {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+
+        .plan {
+            position: relative;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 300px;
+            vertical-align: top;
+            text-align: center;
+        }
+
+        .buttons {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+
+        .plan:hover .buttons {
+            display: block;
+        }
+
+        .button {
+            background-color: rgba(255, 60, 0, 0.753);
+            color: #fff;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .button.green {
+            background-color: rgba(88, 190, 19, 0.801);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="Site Icon">
+        <h1>Planning</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search..." oninput="filterPlans()">
+    </div>
+
+    <div id="plans-container">
+
+    </div>
+
+    <div class="button-container">
+        <button id="second-button" onclick="onBackButton()">
+            <img src="back.png" alt="Plus Icon" style="width: 60px; height: auto; vertical-align: middle; margin-right: 5px;margin-top: 10px;">
+        </button>
+    </div>
+
+
+    <div class="button-sun-container">
+        <button id="second-button" class="transparent-button" onclick="changeTheme()">
+            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 5px;">
+        </button>
+    </div>
+
+    <script>
+        const plans = JSON.parse(localStorage.getItem('plans')) || [];
+        var sunTheme = true;
+
+        function savePlans() {
+            localStorage.setItem('plans', JSON.stringify(plans));
+        }
+
+        function addPlan(name, desc) {
+            plans.push({ name, desc, isDone:false, inTrash:false });
+            savePlans();
+        }
+
+        function changeTheme(){
+            sunTheme = !sunTheme;
+            var bodyElement = document.body;
+
+            if(sunTheme)
+                bodyElement.style.backgroundColor = '#4d4d4d';
+            else
+                bodyElement.style.backgroundColor = '#ffffff';
+        }
+
+
+        window.onload = function() {
+            displayPlans();
+        };
+
+        function onFullDeletePlan(index) {
+            plans.splice(index, 1);
+            savePlans();
+            displayPlans();
+        }
+
+        function getPlanSizeTrash(){
+            var cnt = 0;
+            plans.forEach((plan, index) => {
+                if(!plan.inTrash) return;
+                cnt++;
+            });
+            return cnt;
+        }
+
+        function onBackupPlan(index) {
+            plans[index].inTrash = false;
+            savePlans();
+            displayPlans();
+        }
+
+        function onBackButton(){
+            window.location.href = 'index.html';
+        }
+
+        function displayPlans() {
+            const plansContainer = document.getElementById('plans-container');
+            plansContainer.innerHTML = '';
+
+            const inTrashCnt = getPlanSizeTrash();
+            var cnt = 0;
+            plans.forEach((plan, index) => {
+                if(!plan.inTrash) return;
+                
+                const planDiv = document.createElement('div');
+                planDiv.classList.add('plan');
+
+                // buttons
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.classList.add('buttons');
+
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('button');
+                deleteButton.textContent = 'Удалить полностью';
+                deleteButton.addEventListener('click', () => onFullDeletePlan(index));
+                buttonsDiv.appendChild(deleteButton);
+
+                const backupButton = document.createElement('button');
+                backupButton.classList.add('button', 'green');
+                backupButton.textContent = 'Восстановить';
+                backupButton.addEventListener('click', () => onBackupPlan(index));
+                buttonsDiv.appendChild(backupButton);
+
+                // texts
+                const heading = document.createElement('h2');
+                heading.textContent = plan.name;
+                heading.style.marginTop = '5px';
+
+                if(plan.isDone)
+                    heading.textContent += " ✔";
+            
+                const description = document.createElement('p');
+                description.textContent = plan.desc;
+                description.style.paddingBottom = '15px';
+
+                planDiv.appendChild(buttonsDiv);
+                planDiv.appendChild(heading);
+                planDiv.appendChild(description);
+                plansContainer.appendChild(planDiv);
+
+                if ((cnt + 1) % 2 === 0 && cnt + 1 !== inTrashCnt) {
+                    const lineBreak = document.createElement('br');
+                    plansContainer.appendChild(lineBreak);
+                }
+                cnt++;
+            });
+        }
+
+
+        function removeInsertedBreaks() {
+            var plansContainer = document.getElementById('plans-container');
+            var insertedBreaks = plansContainer.querySelectorAll('.inserted-br');
+            insertedBreaks.forEach(function(br) {
+                br.remove();
+            });
+        }
+
+        function filterPlans() {
+            var searchInput = document.querySelector('.search-box');
+            var searchTerm = searchInput.value.toLowerCase();
+            if(searchTerm == ''){
+                removeInsertedBreaks();
+                displayPlans();
+                return;
+            }
+
+            var plansContainer = document.getElementById('plans-container');
+            var plans = plansContainer.getElementsByClassName('plan');
+
+            var lineBreaks = plansContainer.getElementsByTagName('br');
+            for (var j = 0; j < lineBreaks.length; j++) {
+                lineBreaks[j].style.display = 'none';
+            }
+
+            var tmp = 0;
+            for (var i = 0; i < plans.length; i++) {
+                var planName = plans[i].getElementsByTagName('h2')[0].textContent.toLowerCase();
+                
+                if (planName.startsWith(searchTerm)) {
+                    plans[i].style.display = '';
+                    tmp++;
+                    if(tmp % 2 == 0)
+                        plans[i].insertAdjacentHTML('afterend', '<br>');
+                } else {
+                    plans[i].style.display = 'none';
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
