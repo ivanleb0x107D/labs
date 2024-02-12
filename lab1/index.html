@@ -1,4 +1,3 @@
-// #define javascript
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -408,6 +407,12 @@
                 // texts
                 const heading = document.createElement('h2');
                 heading.textContent = plan.name;
+
+                if(heading.textContent.length > 25){
+                    heading.textContent = heading.textContent.substring(0, 25);
+                    heading.textContent += "...";
+                }
+
                 heading.style.marginTop = '5px';
 
                 if(plan.isDone)
