@@ -202,6 +202,7 @@
 
     </div>
 
+
     <div class="button-container">
         <button id="second-button" onclick="onBackButton()">
             <img src="back.png" alt="Plus Icon" style="width: 60px; height: auto; vertical-align: middle; margin-right: 5px;margin-top: 10px;">
@@ -299,6 +300,12 @@
                 // texts
                 const heading = document.createElement('h2');
                 heading.textContent = plan.name;
+
+                if(heading.textContent.length > 25){
+                    heading.textContent = heading.textContent.substring(0, 25);
+                    heading.textContent += "...";
+                }
+                
                 heading.style.marginTop = '5px';
 
                 if(plan.isDone)

@@ -75,9 +75,11 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
+            width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
+            align-items: flex-start;
+            justify-content: space-between;
         }
 
         .button {
@@ -213,7 +215,19 @@
             outline: none;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
-
+        hr.style10 {
+            padding-top: 5px;
+            width: 90%;
+            margin-bottom: 40px;
+            border-style: solid; 
+            border-color: #8c8b8b; 
+            border-width: 0 0 2px 0; 
+            border-radius: 0px; 
+        }
+        .left, .right{
+            display: flex;
+                flex-direction: column;
+        }
     </style>
 </head>
 <body>
@@ -232,29 +246,35 @@
             <option value="completed">Завершенные</option>
         </select>
 
+
+            <button id="second-button" class="transparent-button" style="vertical-align: middle;" onclick="openFormModal()">
+                <img src="plus.png" alt="Add" style="width: auto; height: 35px; margin-right: 5px;margin-top: 5px;">
+            </button>
+
     </div>
 
     <div id="plans-container">
 
     </div>
 
-    <div class="button-container">
-        <button id="second-button" class="transparent-button" onclick="openFormModal()">
-            <img src="plus.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 5px;">
-        </button>
 
-        <button id="second-button" onclick="onButtonTrash()">
-            <img src="trash.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 10px;">
-        </button>
-    </div>
 
     <div class="button-sun-container">
+        <div class="left">
+         
+        <button id="second-button" onclick="onButtonTrash()">
+            <img src="trash.png" alt="Plus Icon" style="width: auto; height: 60px; vertical-align: middle; margin-left: 5px;margin-top: 10px;flex-direction: column;">
+        </button>
+
         <button id="second-button" class="transparent-button" onclick="changeTheme()">
-            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 5px;">
+            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-left: 5px;margin-top: 5px;flex-direction: column;">
         </button>
     </div>
+        <br>
+        <hr class="style10">
+    </div>
 
-    <div id="modal">
+    <div id="modal" style="background-color: wheat;">
         <p>Create plan</p>
         <input type="text" class="modal-input" placeholder="Name" style="margin-top: 10px;" id="nameInput">
         <input type="text" class="modal-input" placeholder="Description" style="margin-top: 10px;" id="descInput">
@@ -262,10 +282,6 @@
         <button class="modal-button" onclick="onFormApply()">Create</button>
         <button class="modal-button" onclick="onFormClose()">Cancel</button>
     </div>
-
-
-
-
 
 
 
@@ -477,5 +493,9 @@
         }
 
     </script>
+
+
+
 </body>
+
 </html>
