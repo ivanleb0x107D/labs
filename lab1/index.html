@@ -289,6 +289,13 @@
 
 
     <script>
+        
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
         function onButtonTrash(){
             window.location.href = 'trash.html';
         }
@@ -315,9 +322,8 @@
         }
 
         function changeTheme(){
-            
             sunTheme = !sunTheme;
-            localStorage.setItem('planTheme', sunTheme);
+            document.cookie = "suntheme=" + sunTheme;
 
             if(sunTheme)
                 bodyElement.style.backgroundColor = '#4d4d4d';
@@ -502,7 +508,7 @@
 
     <div class="button-sun-container">
         <button id="second-button" onclick="onButtonTrash()">
-            <img src="trash.png" alt="Trash Icon"style="width: 60px; height: 60px;" >
+            <img src="trash.png" alt="Trash Icon" style="width: 60px; height: 60px;" >
         </button>
 
         <button id="second-button" class="transparent-button" onclick="changeTheme()">

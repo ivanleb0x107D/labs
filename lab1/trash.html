@@ -219,21 +219,14 @@
 
     </div>
 
-
-    <!-- <div class="button-container">
-        <button id="second-button" onclick="onBackButton()">
-            <img src="back.png" alt="Plus Icon" style="width: 60px; height: auto; vertical-align: middle; margin-right: 5px;margin-top: 10px;">
-        </button>
-    </div>
-
-
-    <div class="button-sun-container">
-        <button id="second-button" class="transparent-button" onclick="changeTheme()">
-            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 5px;margin-top: 5px;">
-        </button>
-    </div> -->
-
     <script>
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
         const plans = JSON.parse(localStorage.getItem('plans')) || [];
         var sunTheme = true;
 
@@ -248,16 +241,21 @@
 
         function changeTheme(){
             sunTheme = !sunTheme;
-            var bodyElement = document.body;
-
+            document.cookie = "suntheme=" + sunTheme;
+            
             if(sunTheme)
-                bodyElement.style.backgroundColor = '#4d4d4d';
+                document.body.style.backgroundColor = '#4d4d4d';
             else
-                bodyElement.style.backgroundColor = '#ffffff';
+                document.body.style.backgroundColor = '#ffffff';
         }
 
 
         window.onload = function() {
+            
+            if(getCookie("suntheme") == true)
+                document.body.style.backgroundColor = '#4d4d4d';
+            else
+                document.body.style.backgroundColor = '#ffffff';
             displayPlans();
         };
 
@@ -395,16 +393,14 @@
     </div>
 
     <div class="button-sun-container">
-
-            <button id="second-button" onclick="onBackButton()">
-                <img src="back.png" alt="Plus Icon" style="width: 60px; height: 60px;" >
-            </button>
+        <button id="second-button" onclick="onBackButton()">
+            <img src="back.png" alt="Plus Icon" style="width: 60px; height: 60px;" >
+        </button>
 
         <button id="second-button" class="transparent-button" onclick="changeTheme()">
             <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px;" >
         </button>
     </div>
-
 </footer>
 
 </html>
