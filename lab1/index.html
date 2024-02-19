@@ -6,6 +6,7 @@
     <title>Planning Website</title>
     <style>
         body {
+            overflow-x: hidden;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -73,13 +74,14 @@
         
         .button-sun-container {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 100%;
+            bottom: 14px;
+            right: 20px;
+            width: auto;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: flex-start;
             justify-content: space-between;
+
         }
 
         .button {
@@ -216,7 +218,6 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
         }
         hr.style10 {
-            padding-top: 5px;
             width: 90%;
             margin-bottom: 40px;
             border-style: solid; 
@@ -226,7 +227,18 @@
         }
         .left, .right{
             display: flex;
-                flex-direction: column;
+            flex-direction: column;
+        }
+        footer {
+            display: block;
+            justify-content: center;
+            padding: 5px;
+            background-color: #45a1ff;
+            color: #fff;
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+            overflow-x: hidden;
         }
     </style>
 </head>
@@ -259,20 +271,9 @@
 
 
 
-    <div class="button-sun-container">
-        <div class="left">
-         
-        <button id="second-button" onclick="onButtonTrash()">
-            <img src="trash.png" alt="Plus Icon" style="width: auto; height: 60px; vertical-align: middle; margin-left: 5px;margin-top: 10px;flex-direction: column;">
-        </button>
 
-        <button id="second-button" class="transparent-button" onclick="changeTheme()">
-            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px; vertical-align: middle; margin-left: 5px;margin-top: 5px;flex-direction: column;">
-        </button>
-    </div>
-        <br>
-        <hr class="style10">
-    </div>
+
+
 
     <div id="modal" style="background-color: wheat;">
         <p>Create plan</p>
@@ -287,11 +288,7 @@
 
 
 
-
-
     <script>
-
-
         function onButtonTrash(){
             window.location.href = 'trash.html';
         }
@@ -497,5 +494,22 @@
 
 
 </body>
+
+<footer>
+    <div class="left">
+        <h1>Copyright ©</h1>
+    </div>
+
+    <div class="button-sun-container">
+        <button id="second-button" onclick="onButtonTrash()">
+            <img src="trash.png" alt="Trash Icon"style="width: 60px; height: 60px;" >
+        </button>
+
+        <button id="second-button" class="transparent-button" onclick="changeTheme()">
+            <img src="sun.png" alt="Plus Icon" style="width: 60px; height: 60px;">
+        </button>
+    </div>
+
+</footer>
 
 </html>
